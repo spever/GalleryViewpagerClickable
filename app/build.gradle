@@ -1,7 +1,9 @@
 apply plugin: 'com.android.application'
+
 def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
+
 android {
     signingConfigs {
         debug {
@@ -26,7 +28,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"]
     }
+    lintOptions {
+        abortOnError false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -39,8 +46,8 @@ android {
                 variant.outputs.each { output ->
                     def outputFile = output.outputFile
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        // 输出apk名称为goodway_v1.0_2015-01-15_wandoujia.apk
-                        def fileName = "goodway_v${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+                        // 输出apk名称为testname_v1.0_2015-01-15_wandoujia.apk
+                        def fileName = "testname_v${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
                         output.outputFile = new File(outputFile.parent, fileName)
                     }
                 }
@@ -67,12 +74,12 @@ android {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "wandoujia"]
         }
 
-       /*   更简洁
-       xiaomi {}
-        _360 {}
-        baidu {}
-        wandoujia {}
-        */
+        /*   更简洁
+        xiaomi {}
+         _360 {}
+         baidu {}
+         wandoujia {}
+         */
     }
     productFlavors.all { flavor ->
         flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
